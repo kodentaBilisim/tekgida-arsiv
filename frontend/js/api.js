@@ -66,4 +66,62 @@ const api = {
             method: 'DELETE',
         });
     },
+
+    // Statistics endpoints
+    statistics: {
+        getOverview() {
+            return api.get('/statistics/overview');
+        }
+    },
+
+    // Documents endpoints
+    documents: {
+        getRecent(limit = 10) {
+            return api.get(`/documents/recent?limit=${limit}`);
+        },
+        upload(formData) {
+            return fetch(`${API_BASE}/documents/upload`, {
+                method: 'POST',
+                body: formData
+            }).then(r => r.json());
+        }
+    },
+
+    // Subjects endpoints
+    subjects: {
+        getAll() {
+            return api.get('/subjects');
+        },
+        getById(id) {
+            return api.get(`/subjects/${id}`);
+        },
+        create(data) {
+            return api.post('/subjects', data);
+        },
+        update(id, data) {
+            return api.put(`/subjects/${id}`, data);
+        },
+        delete(id) {
+            return api.delete(`/subjects/${id}`);
+        }
+    },
+
+    // Departments endpoints
+    departments: {
+        getAll() {
+            return api.get('/departments');
+        },
+        getById(id) {
+            return api.get(`/departments/${id}`);
+        },
+        create(data) {
+            return api.post('/departments', data);
+        },
+        update(id, data) {
+            return api.put(`/departments/${id}`, data);
+        },
+        delete(id) {
+            return api.delete(`/departments/${id}`);
+        }
+    }
 };
