@@ -1,0 +1,68 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build
+dist/
+build/
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# Database
+*.sql.backup
+*.db
+
+# MinIO data
+minio-data/
+
+# Parser outputs (keep subjects-with-folders.json)
+subjects-data.json
+
+# Scripts (keep import scripts)
+reset-db.js
+fix-constraint.js
+parse-subjects.js
+parse-subjects-folders.js
+clear-minio.js
+
+# Uploaded files (development)
+uploads/
+
+# Git
+.git/
+.gitignore
+
+# Documentation (keep in repo but not in Docker)
+*.md
+!README.md
+
+# Folders file (large, not needed in production)
+folders
+
+# Docker
+.dockerignore
+docker-compose.yml
