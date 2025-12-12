@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEKGIDA-İŞ Arşiv Sistemi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- API Configuration -->
+    <script>
+        // Backend API URL - CapRover environment variable'dan gelecek
+        window.API_BASE_URL = '%%API_BASE_URL%%';
+        
+        // Eğer placeholder değiştirilmemişse, default kullan
+        if (window.API_BASE_URL.startsWith('%%')) {
+            window.API_BASE_URL = 'https://be.apps.bredimedia.com/api';
+        }
+    </script>
+    
+    <style>
+        .primary { background-color: #2563eb; }
+        .primary-dark { background-color: #1e40af; }
+    </style>
+</head>

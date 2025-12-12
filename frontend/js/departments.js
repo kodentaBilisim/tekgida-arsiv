@@ -3,7 +3,7 @@
  * Handles CRUD operations for departments
  */
 
-const API_BASE = 'https://be.apps.bredimedia.com/api';
+const API_BASE = window.API_BASE_URL || 'https://be.apps.bredimedia.com/api';
 let departments = [];
 let currentDepartment = null;
 let isEditMode = false;
