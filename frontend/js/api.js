@@ -1,5 +1,5 @@
-// API Base URL
-const API_BASE = '/api';
+// API Base URL - Direct backend connection
+const API_BASE = 'https://be.apps.bredimedia.com/api';
 
 // API Client
 const api = {
