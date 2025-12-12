@@ -1,6 +1,25 @@
 // Dashboard functionality
 console.log('Dashboard.js yüklendi');
 
+// Utility functions
+const utils = {
+    formatFileSize(bytes) {
+        if (bytes === 0) return '0 B';
+        const k = 1024;
+        const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+    },
+
+    showToast(message, type = 'info') {
+        console.log(`[${type.toUpperCase()}] ${message}`);
+        // Simple alert for now, can be replaced with better toast UI
+        if (type === 'error') {
+            alert('Hata: ' + message);
+        }
+    }
+};
+
 document.addEventListener('DOMContentLoaded', async () => {
     console.log('DOM yüklendi, dashboard başlatılıyor...');
     await loadDashboard();
