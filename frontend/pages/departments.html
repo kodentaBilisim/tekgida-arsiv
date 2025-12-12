@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birim Yönetimi - Arşiv Sistemi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#8B1538',
+                            dark: '#6B0F2A',
+                            light: '#A91D3A'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-gray-50">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-gradient-to-b from-primary to-primary-dark text-white">
+            <div class="p-6 border-b border-white/10">
+                <h1 class="text-2xl font-bold">📁 Arşiv Sistemi</h1>
+            </div>
+            <nav class="p-4 space-y-2">
+                <a href="../index.html"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 text-white/80 hover:text-white transition">
+                    <span class="text-xl">📊</span>
+                    <span class="font-medium">Dashboard</span>
+                </a>
+                <a href="upload.html"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 text-white/80 hover:text-white transition">
+                    <span class="text-xl">📤</span>
+                    <span class="font-medium">Yükleme</span>
+                </a>
+                <a href="departments.html" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-white/15 text-white">
+                    <span class="text-xl">🏢</span>
+                    <span class="font-medium">Birimler</span>
+                </a>
+                <a href="subjects.html"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 text-white/80 hover:text-white transition">
+                    <span class="text-xl">📋</span>
+                    <span class="font-medium">Konular</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto">
+            <div class="p-8">
+                <!-- Header -->
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900">Birim Yönetimi</h1>
+                        <p class="text-gray-600 mt-2">Birimleri ekleyin, düzenleyin ve yönetin</p>
+                    </div>
+                    <button
+                        class="px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary-dark transition shadow-lg hover:shadow-xl">
+                        + Yeni Birim Ekle
+                    </button>
+                </div>
+
+                <!-- Departments List -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100">
+                    <div class="p-6 border-b border-gray-100">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-xl font-bold text-gray-900">Birimler</h2>
+                            <div class="flex items-center gap-4">
+                                <input type="text" placeholder="Birim ara..."
+                                    class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Table -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50 border-b border-gray-100">
+                                <tr>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900">Kod</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900">Birim Adı</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900">Üst Birim</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900">Klasör Sayısı
+                                    </th>
+                                    <th class="px-6 py-4 text-right text-sm font-semibold text-gray-900">İşlemler</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                <!-- Department Row -->
+                                <tr class="hover:bg-gray-50 transition">
+                                    <td class="px-6 py-4">
+                                        <span
+                                            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary">
+                                            B
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <p class="font-medium text-gray-900">Ana Birim</p>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="text-gray-500">-</span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="text-gray-900">45</span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center justify-end gap-2">
+                                            <button
+                                                class="px-3 py-1.5 text-sm text-primary hover:bg-primary/10 rounded-lg transition">
+                                                Düzenle
+                                            </button>
+                                            <button
+                                                class="px-3 py-1.5 text-sm text-red-600 hover:bg-red-50 rounded-lg transition">
+                                                Sil
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- Department Row -->
+                                <tr class="hover:bg-gray-50 transition">
+                                    <td class="px-6 py-4">
+                                        <span
+                                            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-700">
+                                            B1
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <p class="font-medium text-gray-900">Alt Birim 1</p>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="text-gray-600">B - Ana Birim</span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="text-gray-900">28</span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center justify-end gap-2">
+                                            <button
+                                                class="px-3 py-1.5 text-sm text-primary hover:bg-primary/10 rounded-lg transition">
+                                                Düzenle
+                                            </button>
+                                            <button
+                                                class="px-3 py-1.5 text-sm text-red-600 hover:bg-red-50 rounded-lg transition">
+                                                Sil
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- Department Row -->
+                                <tr class="hover:bg-gray-50 transition">
+                                    <td class="px-6 py-4">
+                                        <span
+                                            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-700">
+                                            B2
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <p class="font-medium text-gray-900">Alt Birim 2</p>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="text-gray-600">B - Ana Birim</span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="text-gray-900">19</span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center justify-end gap-2">
+                                            <button
+                                                class="px-3 py-1.5 text-sm text-primary hover:bg-primary/10 rounded-lg transition">
+                                                Düzenle
+                                            </button>
+                                            <button
+                                                class="px-3 py-1.5 text-sm text-red-600 hover:bg-red-50 rounded-lg transition">
+                                                Sil
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- Department Row -->
+                                <tr class="hover:bg-gray-50 transition">
+                                    <td class="px-6 py-4">
+                                        <span
+                                            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-700">
+                                            C
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <p class="font-medium text-gray-900">İkinci Ana Birim</p>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="text-gray-500">-</span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="text-gray-900">32</span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center justify-end gap-2">
+                                            <button
+                                                class="px-3 py-1.5 text-sm text-primary hover:bg-primary/10 rounded-lg transition">
+                                                Düzenle
+                                            </button>
+                                            <button
+                                                class="px-3 py-1.5 text-sm text-red-600 hover:bg-red-50 rounded-lg transition">
+                                                Sil
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Modal (Hidden by default) -->
+    <div id="departmentModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4">
+            <div class="p-6 border-b border-gray-100">
+                <h2 class="text-2xl font-bold text-gray-900">Yeni Birim Ekle</h2>
+            </div>
+            <div class="p-6 space-y-4">
+                <form id="departmentForm">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Birim Kodu *</label>
+                        <input type="text" placeholder="Örn: B, B1, C"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Birim Adı *</label>
+                        <input type="text" placeholder="Birim adını girin"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Açıklama</label>
+                        <textarea rows="3" placeholder="Birim açıklaması..."
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Üst Birim (Opsiyonel)</label>
+                        <select
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            <option value="">Yok (Ana Birim)</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="p-6 border-t border-gray-100 flex gap-3">
+                <button onclick="saveDepartment()"
+                    class="flex-1 px-4 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary-dark transition">
+                    Kaydet
+                </button>
+                <button onclick="closeModal()"
+                    class="px-4 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-medium hover:border-primary hover:text-primary transition">
+                    İptal
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/departments.js"></script>
+</body>
+
+</html>
