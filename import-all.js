@@ -1,6 +1,6 @@
 import fs from 'fs';
-import { Subject, Folder } from './backend/src/models/index.js';
-import sequelize from './backend/src/config/database.js';
+import { Subject, Folder } from './src/models/index.js';
+import sequelize from './src/config/database.js';
 
 async function importAll() {
     try {
