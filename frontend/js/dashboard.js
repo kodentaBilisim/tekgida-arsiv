@@ -17,6 +17,24 @@ const utils = {
         if (type === 'error') {
             alert('Hata: ' + message);
         }
+    },
+
+    showLoading(elementId) {
+        const el = document.getElementById(elementId);
+        if (el) {
+            el.innerHTML = '<p class="text-center text-gray-500 py-8">Yükleniyor...</p>';
+        }
+    },
+
+    hideLoading(elementId) {
+        // No-op for now
+    },
+
+    showError(elementId, message) {
+        const el = document.getElementById(elementId);
+        if (el) {
+            el.innerHTML = `<p class="text-center text-red-500 py-8">${message}</p>`;
+        }
     }
 };
 
