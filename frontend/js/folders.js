@@ -3,7 +3,6 @@
  * Handles CRUD operations for subjects with hierarchical display
  */
 
-const API_BASE = window.API_BASE_URL || 'https://be.apps.bredimedia.com/api';
 let subjects = [];
 let currentSubject = null;
 let isEditMode = false;
