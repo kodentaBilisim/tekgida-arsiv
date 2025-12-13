@@ -886,27 +886,6 @@ function addFreeNote() {
     input.focus();
 }
 
-
-// Re-render all notes
-container.innerHTML = '';
-freeNotes.forEach((note, i) => {
-    const noteDiv = document.createElement('div');
-    noteDiv.className = 'flex gap-2';
-    noteDiv.innerHTML = `
-            <input type="text" 
-                   name="freeNote${i}" 
-                   value="${note}"
-                   placeholder="Serbest not ekle..." 
-                   class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                   onchange="updateFreeNote(${i}, this.value)">
-            <button type="button" 
-                    onclick="removeFreeNote(${i})" 
-                    class="px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg transition">✕</button>
-        `;
-    container.appendChild(noteDiv);
-});
-}
-
 // Update saveCurrentMetadata to include free notes
 function saveCurrentMetadataWithNotes() {
     const doc = uploadedDocuments[currentDocIndex];
