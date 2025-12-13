@@ -157,6 +157,20 @@ function showDocumentModal(doc) {
     document.getElementById('modalDocSize').textContent = utils.formatFileSize(doc.fileSize || 0);
     document.getElementById('modalDocDate').textContent = new Date(doc.created_at).toLocaleDateString('tr-TR');
 
+    // Load PDF preview
+    const previewContainer = document.getElementById('modalDocPreview');
+    if (doc.minioPath && doc.minioBucket) {
+        const previewUrl = `${API_BASE}/documents/preview/${doc.minioBucket}/${doc.minioPath}`;
+        previewContainer.innerHTML = `
+            <iframe src="${previewUrl}" 
+                    class="w-full h-full border-0" 
+                    style="height: 500px;">
+            </iframe>
+        `;
+    } else {
+        previewContainer.innerHTML = '<p class="text-center text-gray-500 py-8">Önizleme mevcut değil</p>';
+    }
+
     // Render metadata
     const metadataContainer = document.getElementById('modalDocMetadata');
     if (doc.metadata && doc.metadata.length > 0) {
