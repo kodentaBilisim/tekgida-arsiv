@@ -83,16 +83,17 @@ export const createFolder = async (req, res) => {
  */
 export const getFolders = async (req, res) => {
     try {
-        const { departmentCode, subjectCode } = req.query;
+        const { departmentCode, subjectCode, subjectId } = req.query;
 
         const where = {};
 
-        if (departmentCode) {
+        // subjectId ile direkt filtreleme (öncelikli)
+        if (subjectId) {
+            where.subjectId = subjectId;
+        } else if (departmentCode) {
             const department = await Department.findOne({ where: { code: departmentCode } });
             if (department) where.departmentId = department.id;
-        }
-
-        if (subjectCode) {
+        } else if (subjectCode) {
             const subject = await Subject.findOne({ where: { code: subjectCode } });
             if (subject) where.subjectId = subject.id;
         }
