@@ -38,6 +38,11 @@ const Folder = sequelize.define('Folder', {
     description: {
         type: DataTypes.TEXT,
         allowNull: true
+    },
+    cabinetNumber: {
+        type: DataTypes.STRING(50),
+        allowNull: true,
+        field: 'cabinet_number'
     }
 }, {
     tableName: 'folders',

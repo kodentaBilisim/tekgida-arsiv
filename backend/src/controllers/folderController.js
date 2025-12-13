@@ -7,7 +7,7 @@ import { Op } from 'sequelize';
  */
 export const createFolder = async (req, res) => {
     try {
-        const { departmentId, subjectId, sequenceNumber, name, description } = req.body;
+        const { departmentId, subjectId, sequenceNumber, name, description, cabinetNumber } = req.body;
 
         // Validasyon
         if (!departmentId || !subjectId) {
@@ -59,7 +59,8 @@ export const createFolder = async (req, res) => {
             subjectId: subject.id,
             sequenceNumber: nextSequenceNumber,
             name: name || null,
-            description: description || null
+            description: description || null,
+            cabinetNumber: cabinetNumber || null
         });
 
         // İlişkili verilerle birlikte döndür
@@ -170,7 +171,7 @@ export const getFolder = async (req, res) => {
 export const updateFolder = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, description, sequenceNumber } = req.body;
+        const { name, description, sequenceNumber, cabinetNumber } = req.body;
 
         const folder = await Folder.findByPk(id);
 
@@ -181,6 +182,7 @@ export const updateFolder = async (req, res) => {
         if (name !== undefined) folder.name = name;
         if (description !== undefined) folder.description = description;
         if (sequenceNumber !== undefined) folder.sequenceNumber = sequenceNumber;
+        if (cabinetNumber !== undefined) folder.cabinetNumber = cabinetNumber;
 
         await folder.save();
 

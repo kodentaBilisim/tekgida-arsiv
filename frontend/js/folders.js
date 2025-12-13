@@ -407,7 +407,9 @@ async function editFolder(folderId) {
         currentFolder = folder;
 
         // Populate modal
+        document.getElementById('folderDepartmentCode').value = folder.department?.code || 'N/A';
         document.getElementById('folderSequenceNumber').value = folder.sequenceNumber;
+        document.getElementById('folderCabinetNumber').value = folder.cabinetNumber || '';
         document.getElementById('folderName').value = folder.name || '';
         document.getElementById('folderDescription').value = folder.description || '';
 
@@ -422,11 +424,13 @@ async function editFolder(folderId) {
 async function saveFolder() {
     if (!currentFolder) return;
 
+    const cabinetNumber = document.getElementById('folderCabinetNumber').value.trim();
     const name = document.getElementById('folderName').value.trim();
     const description = document.getElementById('folderDescription').value.trim();
 
     try {
         await api.folders.update(currentFolder.id, {
+            cabinetNumber: cabinetNumber || null,
             name: name || null,
             description: description || null
         });
