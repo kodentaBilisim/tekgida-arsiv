@@ -153,6 +153,11 @@ export const getDocument = async (req, res) => {
                             include: [{ model: Subject, as: 'parent' }]
                         }
                     ]
+                },
+                {
+                    model: DocumentMetadata,
+                    as: 'metadata',
+                    required: false
                 }
             ]
         });
@@ -167,6 +172,7 @@ export const getDocument = async (req, res) => {
         res.status(500).json({ error: 'Doküman getirilemedi' });
     }
 };
+
 
 /**
  * Doküman indir
