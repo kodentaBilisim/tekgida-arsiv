@@ -814,8 +814,10 @@ function setupFullscreenAndNotes() {
         closeFullscreenBtn.addEventListener('click', closeFullscreen);
     }
 
-    if (addFreeNoteBtn) {
-        addFreeNoteBtn.addEventListener('click', addFreeNote);
+    // Add first free note input automatically
+    const freeNotesContainer = document.getElementById('freeNotesContainer');
+    if (freeNotesContainer && freeNotesContainer.children.length === 0) {
+        addFreeNote();
     }
 }
 
@@ -832,42 +834,65 @@ function addFreeNote() {
     const container = document.getElementById('freeNotesContainer');
     if (!container) return;
 
-    const noteIndex = freeNotes.length;
-    freeNotes.push('');
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder = 'Serbest not ekleyin...';
+    input.className = 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent';
 
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const value = input.value.trim();
+            if (value) {
+                // Save the note
+                freeNotes.push(value);
+
+                // Create a container for saved note with remove button
+                const noteDiv = document.createElement('div');
+                noteDiv.className = 'flex gap-2';
+
+                const savedInput = document.createElement('input');
+                savedInput.type = 'text';
+                savedInput.value = value;
+                savedInput.readOnly = true;
+                savedInput.className = 'flex-1 px-4 py-2 border border-gray-300 rounded-lg bg-gray-50';
+
+                const removeBtn = document.createElement('button');
+                removeBtn.type = 'button';
+                removeBtn.textContent = '✕';
+                removeBtn.className = 'px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition';
+                removeBtn.onclick = () => {
+                    const index = freeNotes.indexOf(value);
+                    if (index > -1) {
+                        freeNotes.splice(index, 1);
+                    }
+                    noteDiv.remove();
+                };
+
+                noteDiv.appendChild(savedInput);
+                noteDiv.appendChild(removeBtn);
+
+                // Insert before the current input
+                container.insertBefore(noteDiv, input);
+
+                // Clear current input
+                input.value = '';
+                input.focus();
+            }
+        }
+    });
+
+    container.appendChild(input);
+    input.focus();
+}
+
+
+// Re-render all notes
+container.innerHTML = '';
+freeNotes.forEach((note, i) => {
     const noteDiv = document.createElement('div');
     noteDiv.className = 'flex gap-2';
     noteDiv.innerHTML = `
-        <input type="text" 
-               name="freeNote${noteIndex}" 
-               placeholder="Serbest not ekle..." 
-               class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-               onchange="updateFreeNote(${noteIndex}, this.value)">
-        <button type="button" 
-                onclick="removeFreeNote(${noteIndex})" 
-                class="px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg transition">✕</button>
-    `;
-
-    container.appendChild(noteDiv);
-}
-
-function updateFreeNote(index, value) {
-    freeNotes[index] = value;
-}
-
-function removeFreeNote(index) {
-    const container = document.getElementById('freeNotesContainer');
-    if (!container) return;
-
-    // Remove from array
-    freeNotes.splice(index, 1);
-
-    // Re-render all notes
-    container.innerHTML = '';
-    freeNotes.forEach((note, i) => {
-        const noteDiv = document.createElement('div');
-        noteDiv.className = 'flex gap-2';
-        noteDiv.innerHTML = `
             <input type="text" 
                    name="freeNote${i}" 
                    value="${note}"
@@ -878,8 +903,8 @@ function removeFreeNote(index) {
                     onclick="removeFreeNote(${i})" 
                     class="px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg transition">✕</button>
         `;
-        container.appendChild(noteDiv);
-    });
+    container.appendChild(noteDiv);
+});
 }
 
 // Update saveCurrentMetadata to include free notes
