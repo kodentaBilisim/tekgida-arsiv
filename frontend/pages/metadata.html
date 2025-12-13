@@ -96,6 +96,23 @@
                         <!-- PDF Preview -->
                         <div class="bg-white rounded-xl shadow-sm p-6">
                             <h2 class="text-xl font-bold mb-4" id="docTitle">Doküman</h2>
+
+                            <!-- Document Info -->
+                            <div class="mb-4 p-4 bg-gray-50 rounded-lg space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Konu:</span>
+                                    <span class="font-medium" id="docSubject">-</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Birim:</span>
+                                    <span class="font-medium" id="docDepartment">-</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Klasör:</span>
+                                    <span class="font-medium" id="docFolder">-</span>
+                                </div>
+                            </div>
+
                             <div id="pdfPreview" class="bg-gray-100 rounded-lg" style="height: 600px;">
                                 <p class="text-center text-gray-500 py-8">Yükleniyor...</p>
                             </div>

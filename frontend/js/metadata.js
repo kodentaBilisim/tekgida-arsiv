@@ -42,6 +42,13 @@ function showDocument(index) {
     // Update title
     document.getElementById('docTitle').textContent = doc.originalFilename || doc.filename;
 
+    // Update document info
+    if (doc.folder) {
+        document.getElementById('docSubject').textContent = doc.folder.subject?.title || '-';
+        document.getElementById('docDepartment').textContent = doc.folder.department?.name || '-';
+        document.getElementById('docFolder').textContent = `${doc.folder.sequenceNumber} - ${doc.folder.name}` || '-';
+    }
+
     // Load PDF preview
     const previewContainer = document.getElementById('pdfPreview');
     if (doc.minioPath && doc.minioBucket) {
