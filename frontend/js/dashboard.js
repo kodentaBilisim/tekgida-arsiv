@@ -154,6 +154,7 @@ function showDocumentModal(doc) {
     document.getElementById('modalDocTitle').textContent = doc.originalFilename || doc.filename;
     document.getElementById('modalDocSubject').textContent = `${doc.folder?.subject?.code || 'N/A'} - ${doc.folder?.subject?.title || 'Bilinmiyor'}`;
     document.getElementById('modalDocDepartment').textContent = doc.folder?.department?.name || 'Bilinmiyor';
+    document.getElementById('modalDocFolder').textContent = `Klasör ${doc.folder?.sequenceNumber || 'N/A'}${doc.folder?.name ? ' - ' + doc.folder.name : ''}`;
     document.getElementById('modalDocSize').textContent = utils.formatFileSize(doc.fileSize || 0);
     document.getElementById('modalDocDate').textContent = new Date(doc.created_at).toLocaleDateString('tr-TR');
 
