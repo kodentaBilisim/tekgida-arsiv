@@ -456,6 +456,18 @@ function closeFolderModal() {
     currentFolder = null;
 }
 
+// Setup folder modal background click
+document.addEventListener('DOMContentLoaded', () => {
+    const folderModal = document.getElementById('folderModal');
+    if (folderModal) {
+        folderModal.addEventListener('click', (e) => {
+            if (e.target === folderModal) {
+                closeFolderModal();
+            }
+        });
+    }
+});
+
 // Expose functions globally
 window.toggleSubject = toggleSubject;
 window.toggleFolders = toggleFolders;
