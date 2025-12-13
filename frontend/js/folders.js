@@ -390,6 +390,13 @@ async function deleteSubject(id) {
 }
 
 /**
+ * Show notification
+ */
+function showNotification(message, type = 'info') {
+    alert(message);
+}
+
+/**
  * Folder management
  */
 let currentFolder = null;
