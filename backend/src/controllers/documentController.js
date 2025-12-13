@@ -264,7 +264,8 @@ export const getDocumentPreview = async (req, res) => {
         // Set headers for PDF
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', 'inline');
-        res.setHeader('X-Frame-Options', 'SAMEORIGIN'); // Allow iframe from same origin
+        res.setHeader('X-Frame-Options', 'ALLOWALL'); // Allow iframe from any origin
+        res.setHeader('Content-Security-Policy', "frame-ancestors 'self' https://fe.apps.bredimedia.com"); // Allow frontend domain
 
         // Pipe file stream to response
         fileStream.pipe(res);
