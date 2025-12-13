@@ -119,7 +119,8 @@ export const getDocumentsByFolder = async (req, res) => {
                 },
                 {
                     model: DocumentMetadata,
-                    as: 'metadata'
+                    as: 'metadata',
+                    required: false
                 }
             ],
             order: [['created_at', 'DESC']]

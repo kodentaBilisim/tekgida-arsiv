@@ -24,4 +24,10 @@ router.put('/folders/:id', updateFolder);
 // Klasör sil
 router.delete('/folders/:id', deleteFolder);
 
+// Klasördeki dokümanları listele
+router.get('/folders/:folderId/documents', async (req, res) => {
+    const { getDocumentsByFolder } = await import('../controllers/documentController.js');
+    return getDocumentsByFolder(req, res);
+});
+
 export default router;
