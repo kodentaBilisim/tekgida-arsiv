@@ -707,22 +707,25 @@ async function showDocumentPreview(index) {
     if (prevBtn) prevBtn.disabled = index === 0;
     if (nextBtn) nextBtn.disabled = index === uploadedDocuments.length - 1;
 
-    // Render PDF preview using PDF.js
+    // Render PDF preview using iframe
     const previewContainer = document.getElementById('pdfPreviewContainer');
-    if (previewContainer && doc.file) {
-        try {
-            await window.renderPDFPreview(doc.file, previewContainer);
-        } catch (error) {
-            console.error('PDF preview error:', error);
-            previewContainer.innerHTML = `
-                <div class="text-center py-12">
-                    <div class="text-6xl mb-4">📄</div>
-                    <p class="font-medium text-gray-900">${doc.originalFilename}</p>
-                    <p class="text-sm text-gray-600 mt-2">${utils.formatFileSize(doc.fileSize)}</p>
-                    <p class="text-xs text-red-500 mt-4">PDF önizleme yüklenemedi</p>
-                </div>
-            `;
-        }
+    if (previewContainer && doc.minioPath && doc.minioBucket) {
+        const previewUrl = `${API_BASE}/documents/preview/${doc.minioBucket}/${doc.minioPath}`;
+        previewContainer.innerHTML = `
+            <iframe src="${previewUrl}" 
+                    class="w-full h-full border-0" 
+                    style="min-height: 700px;">
+            </iframe>
+        `;
+    } else if (previewContainer) {
+        previewContainer.innerHTML = `
+            <div class="text-center py-12">
+                <div class="text-6xl mb-4">📄</div>
+                <p class="font-medium text-gray-900">${doc.originalFilename}</p>
+                <p class="text-sm text-gray-600 mt-2">${utils.formatFileSize(doc.fileSize || 0)}</p>
+                <p class="text-xs text-gray-500 mt-4">Önizleme mevcut değil</p>
+            </div>
+        `;
     }
 
     // Clear metadata form
