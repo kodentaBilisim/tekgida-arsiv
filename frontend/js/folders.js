@@ -223,7 +223,12 @@ async function toggleFolders(subjectId) {
                                         </div>
                                         ${folder.description ? `<p class="text-sm text-gray-600 mt-1">${folder.description.substring(0, 100)}${folder.description.length > 100 ? '...' : ''}</p>` : ''}
                                     </div>
-                                    <span class="text-sm text-gray-500">${folder.documentCount || 0} doküman</span>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-sm text-gray-500">${folder.documentCount || 0} doküman</span>
+                                        <button onclick="editFolder(${folder.id})" class="px-3 py-1.5 text-sm text-primary hover:bg-primary/10 rounded-lg transition">
+                                            Düzenle
+                                        </button>
+                                    </div>
                                 </div>
                             `).join('')}
                         </div>
@@ -385,10 +390,59 @@ async function deleteSubject(id) {
 }
 
 /**
- * Show notification
+ * Folder management
  */
-function showNotification(message, type = 'info') {
-    alert(message);
+let currentFolder = null;
+
+async function editFolder(folderId) {
+    try {
+        const folder = await api.folders.getById(folderId);
+        currentFolder = folder;
+
+        // Populate modal
+        document.getElementById('folderSequenceNumber').value = folder.sequenceNumber;
+        document.getElementById('folderName').value = folder.name || '';
+        document.getElementById('folderDescription').value = folder.description || '';
+
+        // Show modal
+        document.getElementById('folderModal').classList.remove('hidden');
+    } catch (error) {
+        console.error('Klasör yüklenemedi:', error);
+        showNotification('Klasör yüklenemedi', 'error');
+    }
+}
+
+async function saveFolder() {
+    if (!currentFolder) return;
+
+    const name = document.getElementById('folderName').value.trim();
+    const description = document.getElementById('folderDescription').value.trim();
+
+    try {
+        await api.folders.update(currentFolder.id, {
+            name: name || null,
+            description: description || null
+        });
+
+        showNotification('Klasör güncellendi', 'success');
+        closeFolderModal();
+
+        // Reload folders for this subject
+        const container = document.getElementById(`folders-${currentFolder.subjectId}`);
+        if (container) {
+            container.innerHTML = '';
+            toggleFolders(currentFolder.subjectId);
+            toggleFolders(currentFolder.subjectId);
+        }
+    } catch (error) {
+        console.error('Klasör güncellenemedi:', error);
+        showNotification('Klasör güncellenemedi', 'error');
+    }
+}
+
+function closeFolderModal() {
+    document.getElementById('folderModal').classList.add('hidden');
+    currentFolder = null;
 }
 
 // Expose functions globally
@@ -398,3 +452,6 @@ window.editSubject = editSubject;
 window.deleteSubject = deleteSubject;
 window.saveSubject = saveSubject;
 window.closeModal = closeModal;
+window.editFolder = editFolder;
+window.saveFolder = saveFolder;
+window.closeFolderModal = closeFolderModal;
