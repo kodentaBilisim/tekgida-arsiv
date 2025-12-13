@@ -147,7 +147,7 @@ document.getElementById('metadataForm').addEventListener('submit', async (e) => 
 
     // Add free notes
     freeNotes.forEach((note, index) => {
-        metadata.push({ key: `free_note_${index + 1}`, value: note });
+        metadata.push({ key: `metadata_${index + 1}`, value: note });
     });
 
     try {
