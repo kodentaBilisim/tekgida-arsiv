@@ -69,15 +69,14 @@ export const uploadPdfToMinio = async (fileBuffer, originalFilename, folderId) =
         const folderPath = await generateMinioPath(folderId);
         const minioPath = `${folderPath}/${filename}`;
 
-        // MinIO'ya yükle
+        // MinIO'ya yükle (X-Original-Filename header kaldırıldı - Türkçe karakter sorunu)
         await minioClient.putObject(
             BUCKET_NAME,
             minioPath,
             fileBuffer,
             fileBuffer.length,
             {
-                'Content-Type': 'application/pdf',
-                'X-Original-Filename': originalFilename
+                'Content-Type': 'application/pdf'
             }
         );
 
