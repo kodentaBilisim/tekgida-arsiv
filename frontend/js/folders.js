@@ -430,12 +430,14 @@ async function saveFolder() {
         return;
     }
 
+    const sequenceNumber = parseInt(document.getElementById('folderSequenceNumber').value);
     const cabinetNumber = document.getElementById('folderCabinetNumber').value.trim();
     const name = document.getElementById('folderName').value.trim();
     const description = document.getElementById('folderDescription').value.trim();
 
     try {
         await api.folders.update(currentFolder.id, {
+            sequenceNumber: sequenceNumber,
             cabinetNumber: cabinetNumber || null,
             name: name || null,
             description: description || null
@@ -456,7 +458,9 @@ async function saveFolder() {
         }
     } catch (error) {
         console.error('Klasör güncellenemedi:', error);
-        showNotification('Klasör güncellenemedi: ' + error.message, 'error');
+        // Show specific error message if it's a conflict
+        const errorMessage = error.message || 'Klasör güncellenemedi';
+        showNotification(errorMessage, 'error');
     }
 }
 

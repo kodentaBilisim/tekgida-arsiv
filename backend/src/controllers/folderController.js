@@ -179,6 +179,23 @@ export const updateFolder = async (req, res) => {
             return res.status(404).json({ error: 'Klasör bulunamadı' });
         }
 
+        // Check for sequence number conflict if it's being changed
+        if (sequenceNumber !== undefined && sequenceNumber !== folder.sequenceNumber) {
+            const existingFolder = await Folder.findOne({
+                where: {
+                    subjectId: folder.subjectId,
+                    sequenceNumber: sequenceNumber,
+                    id: { [Op.ne]: id } // Exclude current folder
+                }
+            });
+
+            if (existingFolder) {
+                return res.status(409).json({
+                    error: `Bu konuda ${sequenceNumber} numaralı klasör zaten mevcut`
+                });
+            }
+        }
+
         if (name !== undefined) folder.name = name;
         if (description !== undefined) folder.description = description;
         if (sequenceNumber !== undefined) folder.sequenceNumber = sequenceNumber;
