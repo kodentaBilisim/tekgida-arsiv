@@ -276,3 +276,93 @@ export const getDocumentPreview = async (req, res) => {
         res.status(500).json({ error: 'PDF önizleme alınamadı' });
     }
 };
+
+/**
+ * Metadata eksik dokümanları getir
+ * GET /api/documents/without-metadata
+ */
+export const getDocumentsWithoutMetadata = async (req, res) => {
+    try {
+        const documents = await Document.findAll({
+            include: [
+                {
+                    model: Folder,
+                    as: 'folder',
+                    include: [
+                        { model: Department, as: 'department' },
+                        { model: Subject, as: 'subject' }
+                    ]
+                },
+                {
+                    model: DocumentMetadata,
+                    as: 'metadata',
+                    required: false
+                }
+            ],
+            order: [['created_at', 'DESC']]
+        });
+
+        // Filter documents without metadata
+        const documentsWithoutMetadata = documents.filter(doc =>
+            !doc.metadata || doc.metadata.length === 0
+        );
+
+        res.json(documentsWithoutMetadata);
+    } catch (error) {
+        console.error('Metadata eksik dokümanlar getirme hatası:', error);
+        res.status(500).json({ error: 'Metadata eksik dokümanlar getirilemedi' });
+    }
+};
+
+/**
+ * Doküman metadata'sını güncelle
+ * POST /api/documents/:id/metadata
+ */
+export const updateDocumentMetadata = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { metadata } = req.body; // Array of {key, value}
+
+        const document = await Document.findByPk(id);
+        if (!document) {
+            return res.status(404).json({ error: 'Doküman bulunamadı' });
+        }
+
+        // Delete existing metadata
+        await DocumentMetadata.destroy({ where: { documentId: id } });
+
+        // Insert new metadata
+        if (metadata && Array.isArray(metadata)) {
+            const metadataRecords = metadata.map(m => ({
+                documentId: id,
+                key: m.key,
+                value: m.value
+            }));
+            await DocumentMetadata.bulkCreate(metadataRecords);
+        }
+
+        // Return updated document with metadata
+        const updatedDocument = await Document.findByPk(id, {
+            include: [
+                {
+                    model: Folder,
+                    as: 'folder',
+                    include: [
+                        { model: Department, as: 'department' },
+                        { model: Subject, as: 'subject' }
+                    ]
+                },
+                {
+                    model: DocumentMetadata,
+                    as: 'metadata'
+                }
+            ]
+        });
+
+        res.json(updatedDocument);
+    } catch (error) {
+        console.error('Metadata güncelleme hatası:', error);
+        res.status(500).json({ error: 'Metadata güncellenemedi' });
+    }
+};
+

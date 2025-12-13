@@ -8,13 +8,19 @@ import {
     downloadDocument,
     deleteDocument,
     updateDocument,
-    getDocumentPreview
+    getDocumentPreview,
+    getDocumentsWithoutMetadata,
+    updateDocumentMetadata
 } from '../controllers/documentController.js';
 
 const router = express.Router();
 
 // Preview route (must be before :id route to avoid conflicts)
 router.get('/documents/preview/:bucket/:path(*)', getDocumentPreview);
+
+// Metadata management
+router.get('/documents/without-metadata', getDocumentsWithoutMetadata);
+router.post('/documents/:id/metadata', updateDocumentMetadata);
 
 // Recent documents
 router.get('/documents/recent', getRecentDocuments);
@@ -38,3 +44,4 @@ router.put('/documents/:id', updateDocument);
 router.delete('/documents/:id', deleteDocument);
 
 export default router;
+

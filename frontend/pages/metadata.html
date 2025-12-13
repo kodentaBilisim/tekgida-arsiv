@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Arşiv Sistemi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#8B1538',
+                            dark: '#6B0F2A',
+                            light: '#A91D3A'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-gray-50">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-gradient-to-b from-primary to-primary-dark text-white">
+            <div class="p-6 border-b border-white/10">
+                <h1 class="text-2xl font-bold">📁 Arşiv Sistemi</h1>
+            </div>
+            <nav class="p-4 space-y-2">
+                <a href="index.html" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-white/15 text-white">
+                    <span class="text-xl">📊</span>
+                    <span class="font-medium">Dashboard</span>
+                </a>
+                <a href="pages/upload.html"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 text-white/80 hover:text-white transition">
+                    <span class="text-xl">📤</span>
+                    <span class="font-medium">Yükleme</span>
+                </a>
+                <a href="pages/departments.html"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 text-white/80 hover:text-white transition">
+                    <span class="text-xl">🏢</span>
+                    <span class="font-medium">Birimler</span>
+                </a>
+                <a href="pages/subjects.html"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 text-white/80 hover:text-white transition">
+                    <span class="text-xl">📋</span>
+                    <span class="font-medium">Konular</span>
+                </a>
+                <a href="pages/folders.html"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 text-white/80 hover:text-white transition">
+                    <span class="text-xl">📁</span>
+                    <span class="font-medium">Klasörler</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto">
+            <div class="p-8">
+                <!-- Header -->
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
+                    <p class="text-gray-600 mt-2">Arşiv sistemi genel görünümü</p>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <!-- Stat Card 1 -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Toplam Klasör</p>
+                                <p class="text-3xl font-bold text-primary mt-2" id="totalFolders">-</p>
+                            </div>
+                            <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                                <span class="text-2xl">📁</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stat Card 2 -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Toplam Doküman</p>
+                                <p class="text-3xl font-bold text-primary mt-2" id="totalDocuments">-</p>
+                            </div>
+                            <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                                <span class="text-2xl">📄</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stat Card 3 -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Toplam Boyut</p>
+                                <p class="text-3xl font-bold text-primary mt-2" id="totalSize">-</p>
+                            </div>
+                            <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                                <span class="text-2xl">💾</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stat Card 4 -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Son 30 Gün</p>
+                                <p class="text-3xl font-bold text-primary mt-2" id="recentUploads">-</p>
+                            </div>
+                            <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                                <span class="text-2xl">📅</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100">
+                    <div class="p-6 border-b border-gray-100">
+                        <h2 class="text-xl font-bold text-gray-900">Son Yüklenenler</h2>
+                    </div>
+                    <div id="recentDocumentsContainer" class="divide-y divide-gray-100">
+                        <p class="text-center text-gray-500 py-8">Yükleniyor...</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Document Preview Modal -->
+    <div id="documentPreviewModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b border-gray-100">
+                <div class="flex items-center justify-between">
+                    <h2 id="modalDocTitle" class="text-2xl font-bold text-gray-900">Doküman Detayı</h2>
+                    <button onclick="closeDocumentModal()" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="p-6 space-y-6">
+                <!-- PDF Preview -->
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Önizleme</h3>
+                    <div id="modalDocPreview" class="bg-gray-100 rounded-lg overflow-hidden" style="height: 500px;">
+                        <p class="text-center text-gray-500 py-8">Yükleniyor...</p>
+                    </div>
+                </div>
+
+                <!-- Document Info -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-sm text-gray-500">Konu</p>
+                        <p id="modalDocSubject" class="text-sm font-medium text-gray-900 mt-1">-</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Birim</p>
+                        <p id="modalDocDepartment" class="text-sm font-medium text-gray-900 mt-1">-</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Klasör</p>
+                        <p id="modalDocFolder" class="text-sm font-medium text-gray-900 mt-1">-</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Dosya Boyutu</p>
+                        <p id="modalDocSize" class="text-sm font-medium text-gray-900 mt-1">-</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Yüklenme Tarihi</p>
+                        <p id="modalDocDate" class="text-sm font-medium text-gray-900 mt-1">-</p>
+                    </div>
+                </div>
+
+                <!-- Metadata -->
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Metadata</h3>
+                    <div id="modalDocMetadata" class="grid grid-cols-2 gap-3">
+                        <p class="text-sm text-gray-500">Yükleniyor...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script>
+        function closeDocumentModal() {
+            document.getElementById('documentPreviewModal').classList.add('hidden');
+        }
+
+        // Close modal on background click
+        document.getElementById('documentPreviewModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'documentPreviewModal') {
+                closeDocumentModal();
+            }
+        });
+
+        // Make functions global
+        window.openDocumentPreview = openDocumentPreview;
+        window.closeDocumentModal = closeDocumentModal;
+    </script>
+</body>
+
+</html>
