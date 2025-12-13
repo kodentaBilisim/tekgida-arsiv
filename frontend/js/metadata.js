@@ -6,7 +6,6 @@ let freeNotes = [];
 // Load documents on page load
 document.addEventListener('DOMContentLoaded', async () => {
     await loadDocuments();
-    addFreeNoteInput(); // Add first input by default
 });
 
 async function loadDocuments() {
