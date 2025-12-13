@@ -255,11 +255,12 @@ export const updateDocument = async (req, res) => {
 export const getDocumentPreview = async (req, res) => {
     try {
         const { bucket, path } = req.params;
+        const minioPath = decodeURIComponent(path);
 
-        console.log('PDF preview isteği:', { bucket, path: decodeURIComponent(path) });
+        console.log('PDF preview isteği:', { bucket, minioPath });
 
-        // Get file from MinIO
-        const fileStream = await downloadPdfFromMinio(bucket, decodeURIComponent(path));
+        // Get file from MinIO (bucket is already set in minioService)
+        const fileStream = await downloadPdfFromMinio(minioPath);
 
         // Set headers for PDF
         res.setHeader('Content-Type', 'application/pdf');
