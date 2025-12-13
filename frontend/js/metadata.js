@@ -1,10 +1,12 @@
 let documents = [];
 let currentIndex = 0;
 let processedCount = 0;
+let freeNotes = [];
 
 // Load documents on page load
 document.addEventListener('DOMContentLoaded', async () => {
     await loadDocuments();
+    addFreeNoteInput(); // Add first input by default
 });
 
 async function loadDocuments() {
@@ -46,8 +48,8 @@ function showDocument(index) {
     if (doc.minioPath && doc.minioBucket) {
         const previewUrl = `${window.API_BASE_URL}/documents/preview/${doc.minioBucket}/${doc.minioPath}`;
         previewContainer.innerHTML = `
-            <iframe src="${previewUrl}" 
-                    class="w-full h-full border-0 rounded-lg" 
+            <iframe src="${previewUrl}"
+                    class="w-full h-full border-0 rounded-lg"
                     style="height: 600px;">
             </iframe>
         `;
@@ -61,8 +63,40 @@ function showDocument(index) {
         `;
     }
 
-    // Clear form
+    // Clear form and free notes
     document.getElementById('metadataForm').reset();
+    freeNotes = [];
+    const container = document.getElementById('freeNotesContainer');
+    container.innerHTML = '';
+    addFreeNoteInput(); // Add first input
+}
+
+function addFreeNoteInput() {
+    const container = document.getElementById('freeNotesContainer');
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder = 'Serbest not ekleyin...';
+    input.className = 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent';
+
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const value = input.value.trim();
+            if (value) {
+                freeNotes.push(value);
+                input.value = '';
+                addFreeNoteInput();
+                // Focus on new input
+                setTimeout(() => {
+                    const inputs = container.querySelectorAll('input');
+                    inputs[inputs.length - 1].focus();
+                }, 0);
+            }
+        }
+    });
+
+    container.appendChild(input);
+    input.focus();
 }
 
 function showEmptyState(message) {
@@ -85,13 +119,28 @@ document.getElementById('metadataForm').addEventListener('submit', async (e) => 
     const doc = documents[currentIndex];
     const formData = new FormData(e.target);
 
+    // Collect free notes from inputs
+    const inputs = document.getElementById('freeNotesContainer').querySelectorAll('input');
+    inputs.forEach(input => {
+        const value = input.value.trim();
+        if (value && !freeNotes.includes(value)) {
+            freeNotes.push(value);
+        }
+    });
+
     // Build metadata array
     const metadata = [];
-    for (const [key, value] of formData.entries()) {
-        if (value) {
-            metadata.push({ key, value });
-        }
+
+    // Add notes if present
+    const notes = formData.get('notes');
+    if (notes) {
+        metadata.push({ key: 'notes', value: notes });
     }
+
+    // Add free notes
+    freeNotes.forEach((note, index) => {
+        metadata.push({ key: `free_note_${index + 1}`, value: note });
+    });
 
     try {
         await fetch(`${window.API_BASE_URL}/documents/${doc.id}/metadata`, {

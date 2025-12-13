@@ -105,33 +105,23 @@
                         <div class="bg-white rounded-xl shadow-sm p-6">
                             <h2 class="text-xl font-bold mb-4">Metadata Bilgileri</h2>
                             <form id="metadataForm" class="space-y-4">
-                                <div>
-                                    <label class="block text-sm font-medium mb-2">Belge Tarihi</label>
-                                    <input type="date" name="documentDate" class="w-full px-4 py-2 border rounded-lg">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium mb-2">Gönderen</label>
-                                    <input type="text" name="sender" class="w-full px-4 py-2 border rounded-lg">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium mb-2">Alıcı</label>
-                                    <input type="text" name="receiver" class="w-full px-4 py-2 border rounded-lg">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium mb-2">Belge Türü</label>
-                                    <select name="documentType" class="w-full px-4 py-2 border rounded-lg">
-                                        <option value="">Seçiniz</option>
-                                        <option value="yazisma">Yazışma</option>
-                                        <option value="karar">Karar</option>
-                                        <option value="tutanak">Tutanak</option>
-                                        <option value="rapor">Rapor</option>
-                                    </select>
-                                </div>
+                                <!-- Notlar -->
                                 <div>
                                     <label class="block text-sm font-medium mb-2">Notlar</label>
                                     <textarea name="notes" rows="3"
-                                        class="w-full px-4 py-2 border rounded-lg"></textarea>
+                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
                                 </div>
+
+                                <!-- Serbest Notlar -->
+                                <div>
+                                    <div class="flex items-center justify-between mb-2">
+                                        <label class="block text-sm font-medium">Serbest Notlar</label>
+                                    </div>
+                                    <div id="freeNotesContainer" class="space-y-2">
+                                        <!-- First input will be added by JS -->
+                                    </div>
+                                </div>
+
                                 <div class="flex gap-3 pt-4">
                                     <button type="button" onclick="skipDocument()"
                                         class="flex-1 px-6 py-3 border-2 border-gray-300 rounded-lg hover:bg-gray-50">
