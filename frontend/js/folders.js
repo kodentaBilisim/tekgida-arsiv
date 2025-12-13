@@ -126,44 +126,18 @@ async function renderSubjectCard(subject) {
 }
 
 /**
- * Render child subject with folders
+ * Render child subject with folders placeholder
  */
 async function renderChildSubject(subject) {
     const colorClasses = getColorClass(subject.code);
 
-    // Fetch folders for this subject
-    let foldersHTML = '';
-    try {
-        const response = await fetch(`${API_BASE}/folders?subjectId=${subject.id}`);
-        if (response.ok) {
-            const folders = await response.json();
-            if (folders.length > 0) {
-                foldersHTML = `
-                    <div class="mt-4 ml-12 space-y-2">
-                        ${folders.map(folder => `
-                            <div class="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 hover:border-primary/30 transition">
-                                <span class="text-2xl">📁</span>
-                                <div class="flex-1">
-                                    <div class="flex items-center gap-2">
-                                        <span class="font-medium text-gray-900">Klasör ${folder.sequenceNumber}</span>
-                                        ${folder.name ? `<span class="text-sm text-gray-600">- ${folder.name}</span>` : ''}
-                                    </div>
-                                    ${folder.description ? `<p class="text-sm text-gray-600 mt-1">${folder.description.substring(0, 100)}${folder.description.length > 100 ? '...' : ''}</p>` : ''}
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-            }
-        }
-    } catch (error) {
-        console.error('Error loading folders:', error);
-    }
-
     return `
-        <div class="p-6 pl-20 border-b border-gray-100 last:border-b-0 hover:bg-white transition">
+        <div class="p-6 pl-20 border-b border-gray-100 last:border-b-0 hover:bg-white transition" data-subject-id="${subject.id}">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
+                    <button onclick="toggleFolders(${subject.id})" class="text-xl text-gray-400 hover:text-primary transition">
+                        ▶
+                    </button>
                     <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${colorClasses}">
                         ${subject.code}
                     </span>
@@ -181,7 +155,7 @@ async function renderChildSubject(subject) {
                     </button>
                 </div>
             </div>
-            ${foldersHTML}
+            <div id="folders-${subject.id}" class="hidden"></div>
         </div>
     `;
 }
@@ -213,6 +187,62 @@ function toggleSubject(id) {
         expandedSubjects.add(id);
     }
     renderSubjects();
+}
+
+/**
+ * Toggle folders for a subject (lazy load)
+ */
+async function toggleFolders(subjectId) {
+    const container = document.getElementById(`folders-${subjectId}`);
+    const button = document.querySelector(`[data-subject-id="${subjectId}"] button[onclick*="toggleFolders"]`);
+
+    if (!container) return;
+
+    // Toggle visibility
+    if (container.classList.contains('hidden')) {
+        // Show and load folders if not loaded yet
+        container.classList.remove('hidden');
+        if (button) button.textContent = '▼';
+
+        // Load folders if container is empty
+        if (!container.innerHTML) {
+            container.innerHTML = '<p class="text-center text-gray-500 py-4 ml-12">Yükleniyor...</p>';
+
+            try {
+                const folders = await api.folders.getAll({ subjectId });
+
+                if (folders.length > 0) {
+                    const foldersHTML = `
+                        <div class="mt-4 ml-12 space-y-2">
+                            ${folders.map(folder => `
+                                <div class="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 hover:border-primary/30 transition">
+                                    <span class="text-2xl">📁</span>
+                                    <div class="flex-1">
+                                        <div class="flex items-center gap-2">
+                                            <span class="font-medium text-gray-900">Klasör ${folder.sequenceNumber}</span>
+                                            ${folder.name ? `<span class="text-sm text-gray-600">- ${folder.name}</span>` : ''}
+                                        </div>
+                                        ${folder.description ? `<p class="text-sm text-gray-600 mt-1">${folder.description.substring(0, 100)}${folder.description.length > 100 ? '...' : ''}</p>` : ''}
+                                    </div>
+                                    <span class="text-sm text-gray-500">${folder.documentCount || 0} doküman</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                    container.innerHTML = foldersHTML;
+                } else {
+                    container.innerHTML = '<p class="text-center text-gray-500 py-4 ml-12">Bu konuda klasör bulunmuyor</p>';
+                }
+            } catch (error) {
+                console.error('Error loading folders:', error);
+                container.innerHTML = '<p class="text-center text-red-500 py-4 ml-12">Klasörler yüklenemedi</p>';
+            }
+        }
+    } else {
+        // Hide
+        container.classList.add('hidden');
+        if (button) button.textContent = '▶';
+    }
 }
 
 /**
@@ -364,6 +394,7 @@ function showNotification(message, type = 'info') {
 
 // Expose functions globally
 window.toggleSubject = toggleSubject;
+window.toggleFolders = toggleFolders;
 window.editSubject = editSubject;
 window.deleteSubject = deleteSubject;
 window.saveSubject = saveSubject;

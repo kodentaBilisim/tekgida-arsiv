@@ -123,5 +123,25 @@ const api = {
         delete(id) {
             return api.delete(`/departments/${id}`);
         }
+    },
+
+    // Folders endpoints
+    folders: {
+        getAll(params = {}) {
+            const query = new URLSearchParams(params).toString();
+            return api.get(`/folders${query ? '?' + query : ''}`);
+        },
+        getById(id) {
+            return api.get(`/folders/${id}`);
+        },
+        create(data) {
+            return api.post('/folders', data);
+        },
+        update(id, data) {
+            return api.put(`/folders/${id}`, data);
+        },
+        delete(id) {
+            return api.delete(`/folders/${id}`);
+        }
     }
 };
