@@ -11,8 +11,11 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#2563eb',
-                        'primary-dark': '#1e40af'
+                        primary: {
+                            DEFAULT: '#8B1538',
+                            dark: '#6B0F2A',
+                            light: '#A91D3A'
+                        }
                     }
                 }
             }
@@ -26,19 +29,42 @@
 </head>
 
 <body class="bg-gray-50">
-    <div class="flex min-h-screen">
+    <div class="flex h-screen">
         <!-- Sidebar -->
-        <aside class="w-64 bg-primary text-white">
-            <div class="p-6">
-                <h1 class="text-2xl font-bold">Arşiv Sistemi</h1>
+        <aside class="w-64 bg-gradient-to-b from-primary to-primary-dark text-white">
+            <div class="p-6 border-b border-white/10">
+                <h1 class="text-2xl font-bold">📁 Arşiv Sistemi</h1>
             </div>
-            <nav class="mt-6">
-                <a href="../index.html" class="block px-6 py-3 hover:bg-primary-dark transition">Dashboard</a>
-                <a href="upload.html" class="block px-6 py-3 hover:bg-primary-dark transition">Yükleme</a>
-                <a href="departments.html" class="block px-6 py-3 hover:bg-primary-dark transition">Birimler</a>
-                <a href="subjects.html" class="block px-6 py-3 hover:bg-primary-dark transition">Konular</a>
-                <a href="folders.html" class="block px-6 py-3 hover:bg-primary-dark transition">Klasörler</a>
-                <a href="metadata.html" class="block px-6 py-3 bg-primary-dark">Metadata Yönetimi</a>
+            <nav class="p-4 space-y-2">
+                <a href="../index.html"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 text-white/80 hover:text-white transition">
+                    <span class="text-xl">📊</span>
+                    <span class="font-medium">Dashboard</span>
+                </a>
+                <a href="upload.html"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 text-white/80 hover:text-white transition">
+                    <span class="text-xl">📤</span>
+                    <span class="font-medium">Yükleme</span>
+                </a>
+                <a href="departments.html"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 text-white/80 hover:text-white transition">
+                    <span class="text-xl">🏢</span>
+                    <span class="font-medium">Birimler</span>
+                </a>
+                <a href="subjects.html"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 text-white/80 hover:text-white transition">
+                    <span class="text-xl">📋</span>
+                    <span class="font-medium">Konular</span>
+                </a>
+                <a href="folders.html"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 text-white/80 hover:text-white transition">
+                    <span class="text-xl">📁</span>
+                    <span class="font-medium">Klasörler</span>
+                </a>
+                <a href="metadata.html" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-white/15 text-white">
+                    <span class="text-xl">🏷️</span>
+                    <span class="font-medium">Metadata Yönetimi</span>
+                </a>
             </nav>
         </aside>
 
