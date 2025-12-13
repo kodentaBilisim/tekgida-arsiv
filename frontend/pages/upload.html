@@ -207,151 +207,125 @@
                         <div class="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
                             <div class="flex items-center justify-between mb-6">
                                 <h2 class="text-2xl font-bold text-gray-900">4. Metadata ve Önizleme</h2>
-                                <button id="fullscreenBtn"
-                                    class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition">
-                                    🔍 Tam Ekran
-                                </button>
+                                <p class="text-sm text-gray-600" id="currentDocInfo">-</p>
                             </div>
 
                             <!-- PDF Preview Section - Full Width -->
                             <div class="mb-6">
                                 <div class="bg-gray-50 rounded-lg p-6">
-                                    <div class="flex items-center justify-between mb-4">
-                                        <h3 class="text-lg font-semibold text-gray-900" id="currentDocTitle">PDF
-                                            Önizleme</h3>
-                                        <p class="text-sm text-gray-600" id="currentDocInfo">-</p>
-                                    </div>
+                                    <h3 class="text-lg font-semibold text-gray-900 mb-4" id="currentDocTitle">PDF
+                                        Önizleme</h3>
 
-                                    <!-- PDF Canvas Container -->
-                                    <div id="pdfPreviewContainer"
-                                        class="bg-white rounded-lg min-h-[700px] flex items-center justify-center">
-                                        <p class="text-gray-500">PDF önizlemesi yükleniyor...</p>
-                                    </div>
-                                </div>
-
-                                <!-- Document Navigation - Below PDF -->
-                                <div class="flex items-center justify-between mt-4 pt-4 border-t">
-                                    <div class="flex gap-3">
-                                        <button id="prevDocBtn"
-                                            class="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg hover:border-primary hover:text-primary transition font-medium">
-                                            ← Önceki
-                                        </button>
-                                        <button id="nextDocBtn"
-                                            class="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg hover:border-primary hover:text-primary transition font-medium">
-                                            Sonraki →
-                                        </button>
-                                    </div>
-                                    <div class="flex gap-3">
-                                        <button id="skipDocBtn"
-                                            class="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg hover:border-primary hover:text-primary transition font-medium">
-                                            Atla
-                                        </button>
-                                        <button id="saveMetadataBtn"
-                                            class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition font-medium">
-                                            Kaydet ve Devam
-                                        </button>
+                                    <!-- PDF Iframe Container -->
+                                    <div id="pdfPreviewContainer" class="bg-white rounded-lg overflow-hidden"
+                                        style="height: 600px;">
+                                        <p class="text-gray-500 text-center py-8">PDF önizlemesi yükleniyor...</p>
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Metadata Form Section -->
-                            <div class="mt-8">
-                                <h3 class="text-lg font-semibold text-gray-900 mb-4">Doküman Bilgileri</h3>
-                                <form id="metadataForm" class="space-y-4">
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <!-- Belge Tarihi -->
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-2">Belge
-                                                Tarihi</label>
-                                            <input type="date" name="documentDate"
-                                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-                                        </div>
-
-                                        <!-- Gönderen -->
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-2">Gönderen</label>
-                                            <input type="text" name="sender" placeholder="Gönderen adı"
-                                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-                                        </div>
-
-                                        <!-- Alıcı -->
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-2">Alıcı</label>
-                                            <input type="text" name="receiver" placeholder="Alıcı adı"
-                                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-                                        </div>
-
-                                        <!-- Belge Türü -->
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-2">Belge
-                                                Türü</label>
-                                            <select name="documentType"
-                                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-                                                <option value="">Seçiniz</option>
-                                                <option value="yazisma">Yazışma</option>
-                                                <option value="karar">Karar</option>
-                                                <option value="tutanak">Tutanak</option>
-                                                <option value="rapor">Rapor</option>
-                                                <option value="diger">Diğer</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <!-- Notlar -->
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Notlar</label>
-                                        <textarea name="notes" rows="3" placeholder="Ek notlar..."
-                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
-                                    </div>
-
-                                    <!-- Serbest Notlar -->
-                                    <div>
-                                        <div class="flex items-center justify-between mb-2">
-                                            <label class="block text-sm font-medium text-gray-700">Serbest
-                                                Notlar</label>
-                                            <button type="button" id="addFreeNoteBtn"
-                                                class="text-sm text-primary hover:text-primary-dark font-medium">+ Not
-                                                Ekle</button>
-                                        </div>
-                                        <div id="freeNotesContainer" class="space-y-2">
-                                            <!-- Free notes will be added here dynamically -->
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Fullscreen Preview Modal -->
-                    <div id="fullscreenModal" class="hidden fixed inset-0 bg-black bg-opacity-90 z-50">
-                        <div class="h-full flex flex-col">
-                            <div class="flex items-center justify-between p-4 bg-black bg-opacity-50">
-                                <p id="fullscreenDocInfo" class="text-white font-medium"></p>
-                                <button id="closeFullscreenBtn"
-                                    class="text-white text-2xl hover:text-gray-300">✕</button>
-                            </div>
-                            <div class="flex-1 flex flex-col overflow-hidden">
-                                <!-- Fullscreen Preview Area -->
-                                <div id="fullscreenPreview" class="flex-1 overflow-auto p-6 bg-gray-50">
-                                    <!-- PDF will render here -->
-                                </div>
-                            </div>
+                            Kaydet ve Devam
+                            </button>
                         </div>
                     </div>
                 </div>
-            </div>
-        </main>
-        <!-- PDF.js Library -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-        <script>
-            // Configure PDF.js worker
-            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-        </script>
 
-        <!-- Scripts -->
-        <script src="../js/api.js"></script>
-        <script src="../js/pdf-preview.js"></script>
-        <script src="../js/upload.js"></script>
+                <!-- Metadata Form Section -->
+                <div class="mt-8">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Doküman Bilgileri</h3>
+                    <form id="metadataForm" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Belge Tarihi -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Belge
+                                    Tarihi</label>
+                                <input type="date" name="documentDate"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+
+                            <!-- Gönderen -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Gönderen</label>
+                                <input type="text" name="sender" placeholder="Gönderen adı"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+
+                            <!-- Alıcı -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Alıcı</label>
+                                <input type="text" name="receiver" placeholder="Alıcı adı"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+
+                            <!-- Belge Türü -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Belge
+                                    Türü</label>
+                                <select name="documentType"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                    <option value="">Seçiniz</option>
+                                    <option value="yazisma">Yazışma</option>
+                                    <option value="karar">Karar</option>
+                                    <option value="tutanak">Tutanak</option>
+                                    <option value="rapor">Rapor</option>
+                                    <option value="diger">Diğer</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Notlar -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Notlar</label>
+                            <textarea name="notes" rows="3" placeholder="Ek notlar..."
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
+                        </div>
+
+                        <!-- Serbest Notlar -->
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <label class="block text-sm font-medium text-gray-700">Serbest
+                                    Notlar</label>
+                                <button type="button" id="addFreeNoteBtn"
+                                    class="text-sm text-primary hover:text-primary-dark font-medium">+ Not
+                                    Ekle</button>
+                            </div>
+                            <div id="freeNotesContainer" class="space-y-2">
+                                <!-- Free notes will be added here dynamically -->
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+    </div>
+
+    <!-- Fullscreen Preview Modal -->
+    <div id="fullscreenModal" class="hidden fixed inset-0 bg-black bg-opacity-90 z-50">
+        <div class="h-full flex flex-col">
+            <div class="flex items-center justify-between p-4 bg-black bg-opacity-50">
+                <p id="fullscreenDocInfo" class="text-white font-medium"></p>
+                <button id="closeFullscreenBtn" class="text-white text-2xl hover:text-gray-300">✕</button>
+            </div>
+            <div class="flex-1 flex flex-col overflow-hidden">
+                <!-- Fullscreen Preview Area -->
+                <div id="fullscreenPreview" class="flex-1 overflow-auto p-6 bg-gray-50">
+                    <!-- PDF will render here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </main>
+    <!-- PDF.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        // Configure PDF.js worker
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    </script>
+
+    <!-- Scripts -->
+    <script src="../js/api.js"></script>
+    <script src="../js/pdf-preview.js"></script>
+    <script src="../js/upload.js"></script>
 </body>
 
 </html>
