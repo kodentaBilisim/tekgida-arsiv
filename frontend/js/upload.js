@@ -1,6 +1,34 @@
 // Upload page functionality
 console.log('Upload.js yüklendi');
 
+// Utility functions
+const utils = {
+    showLoading(elementId) {
+        const el = document.getElementById(elementId);
+        if (el) {
+            el.innerHTML = '<p class="text-center text-gray-500 py-8">Yükleniyor...</p>';
+        }
+    },
+
+    hideLoading(elementId) {
+        // No-op for now
+    },
+
+    showError(elementId, message) {
+        const el = document.getElementById(elementId);
+        if (el) {
+            el.innerHTML = `<p class="text-center text-red-500 py-8">${message}</p>`;
+        }
+    },
+
+    showToast(message, type = 'info') {
+        console.log(`[${type.toUpperCase()}] ${message}`);
+        if (type === 'error') {
+            alert('Hata: ' + message);
+        }
+    }
+};
+
 let currentStep = 1;
 let uploadData = {
     mainSubjectId: null,
