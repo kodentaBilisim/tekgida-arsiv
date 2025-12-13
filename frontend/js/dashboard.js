@@ -98,9 +98,9 @@ async function loadRecentDocuments() {
             return;
         }
 
-        // Render documents
+        // Render documents with click handlers
         container.innerHTML = recentDocs.map(doc => `
-            <div class="p-6 hover:bg-gray-50 transition">
+            <div class="p-6 hover:bg-gray-50 transition cursor-pointer" onclick="openDocumentPreview(${doc.id})">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-4">
                         <div class="w-10 h-10 bg-${getRandomColor()}-100 rounded-lg flex items-center justify-center">
@@ -127,6 +127,51 @@ async function loadRecentDocuments() {
         console.error('Son dokümanlar yüklenemedi:', error);
         utils.showError(container, 'Son dokümanlar yüklenemedi: ' + error.message);
     }
+}
+
+async function openDocumentPreview(documentId) {
+    try {
+        // Get document details with metadata
+        const doc = await api.request(`/documents/${documentId}`);
+
+        // Show modal
+        showDocumentModal(doc);
+    } catch (error) {
+        console.error('Doküman yüklenemedi:', error);
+        utils.showToast('Doküman yüklenemedi', 'error');
+    }
+}
+
+function showDocumentModal(doc) {
+    const modal = document.getElementById('documentPreviewModal');
+    if (!modal) {
+        // Create modal if it doesn't exist
+        createDocumentModal();
+        return showDocumentModal(doc);
+    }
+
+    // Populate modal
+    document.getElementById('modalDocTitle').textContent = doc.originalFilename || doc.filename;
+    document.getElementById('modalDocSubject').textContent = `${doc.folder?.subject?.code || 'N/A'} - ${doc.folder?.subject?.title || 'Bilinmiyor'}`;
+    document.getElementById('modalDocDepartment').textContent = doc.folder?.department?.name || 'Bilinmiyor';
+    document.getElementById('modalDocSize').textContent = utils.formatFileSize(doc.fileSize || 0);
+    document.getElementById('modalDocDate').textContent = new Date(doc.created_at).toLocaleDateString('tr-TR');
+
+    // Render metadata
+    const metadataContainer = document.getElementById('modalDocMetadata');
+    if (doc.metadata && doc.metadata.length > 0) {
+        metadataContainer.innerHTML = doc.metadata.map(m => `
+            <div class="bg-gray-50 p-3 rounded-lg">
+                <p class="text-xs text-gray-500">${m.key}</p>
+                <p class="text-sm text-gray-900 mt-1">${m.value}</p>
+            </div>
+        `).join('');
+    } else {
+        metadataContainer.innerHTML = '<p class="text-sm text-gray-500">Metadata yok</p>';
+    }
+
+    // Show modal
+    modal.classList.remove('hidden');
 }
 
 function getRandomColor() {

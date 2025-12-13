@@ -135,8 +135,70 @@
         </main>
     </div>
 
+    <!-- Document Preview Modal -->
+    <div id="documentPreviewModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b border-gray-100">
+                <div class="flex items-center justify-between">
+                    <h2 id="modalDocTitle" class="text-2xl font-bold text-gray-900">Doküman Detayı</h2>
+                    <button onclick="closeDocumentModal()" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="p-6 space-y-6">
+                <!-- Document Info -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-sm text-gray-500">Konu</p>
+                        <p id="modalDocSubject" class="text-sm font-medium text-gray-900 mt-1">-</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Birim</p>
+                        <p id="modalDocDepartment" class="text-sm font-medium text-gray-900 mt-1">-</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Dosya Boyutu</p>
+                        <p id="modalDocSize" class="text-sm font-medium text-gray-900 mt-1">-</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Yüklenme Tarihi</p>
+                        <p id="modalDocDate" class="text-sm font-medium text-gray-900 mt-1">-</p>
+                    </div>
+                </div>
+
+                <!-- Metadata -->
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Metadata</h3>
+                    <div id="modalDocMetadata" class="grid grid-cols-2 gap-3">
+                        <p class="text-sm text-gray-500">Yükleniyor...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="js/api.js"></script>
     <script src="js/dashboard.js"></script>
+    <script>
+        function closeDocumentModal() {
+            document.getElementById('documentPreviewModal').classList.add('hidden');
+        }
+
+        // Close modal on background click
+        document.getElementById('documentPreviewModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'documentPreviewModal') {
+                closeDocumentModal();
+            }
+        });
+
+        // Make functions global
+        window.openDocumentPreview = openDocumentPreview;
+        window.closeDocumentModal = closeDocumentModal;
+    </script>
 </body>
 
 </html>
