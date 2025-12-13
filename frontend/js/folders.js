@@ -422,7 +422,13 @@ async function editFolder(folderId) {
 }
 
 async function saveFolder() {
-    if (!currentFolder) return;
+    console.log('saveFolder called, currentFolder:', currentFolder);
+
+    if (!currentFolder) {
+        showNotification('Klasör bilgisi bulunamadı. Lütfen tekrar deneyin.', 'error');
+        closeFolderModal();
+        return;
+    }
 
     const cabinetNumber = document.getElementById('folderCabinetNumber').value.trim();
     const name = document.getElementById('folderName').value.trim();
@@ -436,18 +442,21 @@ async function saveFolder() {
         });
 
         showNotification('Klasör güncellendi', 'success');
+
+        // Store subjectId before closing modal
+        const subjectId = currentFolder.subjectId;
         closeFolderModal();
 
         // Reload folders for this subject
-        const container = document.getElementById(`folders-${currentFolder.subjectId}`);
+        const container = document.getElementById(`folders-${subjectId}`);
         if (container) {
             container.innerHTML = '';
-            toggleFolders(currentFolder.subjectId);
-            toggleFolders(currentFolder.subjectId);
+            toggleFolders(subjectId);
+            toggleFolders(subjectId);
         }
     } catch (error) {
         console.error('Klasör güncellenemedi:', error);
-        showNotification('Klasör güncellenemedi', 'error');
+        showNotification('Klasör güncellenemedi: ' + error.message, 'error');
     }
 }
 
