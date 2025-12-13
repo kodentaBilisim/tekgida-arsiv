@@ -83,14 +83,16 @@ function addFreeNoteInput() {
             e.preventDefault();
             const value = input.value.trim();
             if (value) {
+                // Save the note
                 freeNotes.push(value);
-                input.value = '';
+
+                // Make this input readonly and show the saved value
+                input.value = value;
+                input.readOnly = true;
+                input.classList.add('bg-gray-50');
+
+                // Add new input
                 addFreeNoteInput();
-                // Focus on new input
-                setTimeout(() => {
-                    const inputs = container.querySelectorAll('input');
-                    inputs[inputs.length - 1].focus();
-                }, 0);
             }
         }
     });
