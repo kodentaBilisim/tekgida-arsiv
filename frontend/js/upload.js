@@ -1163,13 +1163,20 @@ function closeDocumentViewer() {
 let currentFolder = null;
 
 async function editFolder(folderId) {
+    console.log('editFolder called with ID:', folderId);
     try {
         const folder = await api.folders.getById(folderId);
+        console.log('Folder loaded:', folder);
         currentFolder = folder;
 
         // Load departments
+        console.log('Loading departments...');
         const departments = await api.departments.getAll();
+        console.log('Departments loaded:', departments);
+
         const departmentSelect = document.getElementById('folderDepartmentCode');
+        console.log('Department select element:', departmentSelect);
+
         departmentSelect.innerHTML = departments.map(dept =>
             `<option value="${dept.id}" ${folder.departmentId === dept.id ? 'selected' : ''}>${dept.code} - ${dept.name}</option>`
         ).join('');
