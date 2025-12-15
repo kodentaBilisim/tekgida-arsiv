@@ -49,12 +49,7 @@ CREATE TABLE IF NOT EXISTS folders (
   name VARCHAR(255),
   description TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  
-  CONSTRAINT check_folder_parent CHECK (
-    (department_id IS NOT NULL AND subject_id IS NULL) OR
-    (department_id IS NULL AND subject_id IS NOT NULL)
-  )
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE INDEX IF NOT EXISTS idx_folders_department ON folders(department_id);

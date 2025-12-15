@@ -408,17 +408,8 @@ async function editFolder(folderId) {
         console.log('Folder loaded:', folder);
         currentFolder = folder;
 
-        // Load departments
-        console.log('Loading departments...');
-        const departments = await api.departments.getAll();
-        console.log('Departments loaded:', departments);
-
-        const departmentSelect = document.getElementById('folderDepartmentCode');
-        console.log('Department select element:', departmentSelect);
-
-        departmentSelect.innerHTML = departments.map(dept =>
-            `<option value="${dept.id}" ${folder.departmentId === dept.id ? 'selected' : ''}>${dept.code} - ${dept.name}</option>`
-        ).join('');
+        // Set readonly department code
+        document.getElementById('folderDepartmentCode').value = folder.department?.code || folder.subject?.parent?.code || 'N/A';
 
         // Populate other fields
         document.getElementById('folderSequenceNumber').value = folder.sequenceNumber;
@@ -443,7 +434,6 @@ async function saveFolder() {
         return;
     }
 
-    const departmentId = parseInt(document.getElementById('folderDepartmentCode').value);
     const sequenceNumber = parseInt(document.getElementById('folderSequenceNumber').value);
     const cabinetNumber = document.getElementById('folderCabinetNumber').value.trim();
     const name = document.getElementById('folderName').value.trim();
@@ -451,7 +441,6 @@ async function saveFolder() {
 
     try {
         await api.folders.update(currentFolder.id, {
-            departmentId: departmentId,
             sequenceNumber: sequenceNumber,
             cabinetNumber: cabinetNumber || null,
             name: name || null,
