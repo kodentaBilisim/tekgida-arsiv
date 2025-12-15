@@ -819,7 +819,10 @@ function setupFullscreenAndNotes() {
 
     // Add first free note input automatically
     const freeNotesContainer = document.getElementById('freeNotesContainer');
+    console.log('Free notes container:', freeNotesContainer);
+    console.log('Container children count:', freeNotesContainer?.children.length);
     if (freeNotesContainer && freeNotesContainer.children.length === 0) {
+        console.log('Adding first free note input...');
         addFreeNote();
     }
 }
