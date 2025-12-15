@@ -171,7 +171,7 @@ export const getFolder = async (req, res) => {
 export const updateFolder = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, description, sequenceNumber, cabinetNumber } = req.body;
+        const { name, description, sequenceNumber, cabinetNumber, departmentId } = req.body;
 
         const folder = await Folder.findByPk(id);
 
@@ -200,6 +200,7 @@ export const updateFolder = async (req, res) => {
         if (description !== undefined) folder.description = description;
         if (sequenceNumber !== undefined) folder.sequenceNumber = sequenceNumber;
         if (cabinetNumber !== undefined) folder.cabinetNumber = cabinetNumber;
+        if (departmentId !== undefined) folder.departmentId = departmentId;
 
         await folder.save();
 
