@@ -1218,10 +1218,13 @@ async function saveFolder() {
         });
 
         utils.showToast('Klasör güncellendi');
+
+        // Store subjectId before closing modal
+        const subjectId = currentFolder.subjectId;
         closeFolderModal();
 
         // Reload folders list
-        await loadFoldersForSubject(selectedSubjectId);
+        await loadFoldersForSubject(subjectId);
     } catch (error) {
         console.error('Klasör güncellenemedi:', error);
         const errorMessage = error.message || 'Klasör güncellenemedi';
