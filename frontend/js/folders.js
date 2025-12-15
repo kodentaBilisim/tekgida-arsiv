@@ -406,8 +406,14 @@ async function editFolder(folderId) {
         const folder = await api.folders.getById(folderId);
         currentFolder = folder;
 
-        // Populate modal
-        document.getElementById('folderDepartmentCode').value = folder.department?.code || 'N/A';
+        // Load departments
+        const departments = await api.departments.getAll();
+        const departmentSelect = document.getElementById('folderDepartmentCode');
+        departmentSelect.innerHTML = departments.map(dept =>
+            `<option value="${dept.id}" ${folder.departmentId === dept.id ? 'selected' : ''}>${dept.code} - ${dept.name}</option>`
+        ).join('');
+
+        // Populate other fields
         document.getElementById('folderSequenceNumber').value = folder.sequenceNumber;
         document.getElementById('folderCabinetNumber').value = folder.cabinetNumber || '';
         document.getElementById('folderName').value = folder.name || '';
@@ -430,6 +436,7 @@ async function saveFolder() {
         return;
     }
 
+    const departmentId = parseInt(document.getElementById('folderDepartmentCode').value);
     const sequenceNumber = parseInt(document.getElementById('folderSequenceNumber').value);
     const cabinetNumber = document.getElementById('folderCabinetNumber').value.trim();
     const name = document.getElementById('folderName').value.trim();
@@ -437,6 +444,7 @@ async function saveFolder() {
 
     try {
         await api.folders.update(currentFolder.id, {
+            departmentId: departmentId,
             sequenceNumber: sequenceNumber,
             cabinetNumber: cabinetNumber || null,
             name: name || null,
