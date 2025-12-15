@@ -26,7 +26,8 @@ router.post('/documents/:id/metadata', updateDocumentMetadata);
 router.get('/documents/recent', getRecentDocuments);
 
 // Klasöre toplu PDF yükleme
-router.post('/folders/:folderId/documents/upload', upload.array('files', 10), uploadDocuments);
+router.post('/folders/:folderId/documents/upload', upload.array('files', 1000), uploadDocuments);
+
 
 // Klasördeki dokümanları listele
 router.get('/folders/:folderId/documents', getDocumentsByFolder);
