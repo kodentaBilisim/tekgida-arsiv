@@ -738,7 +738,11 @@ async function showDocumentPreview(index) {
     // Clear free notes
     freeNotes = [];
     const freeNotesContainer = document.getElementById('freeNotesContainer');
-    if (freeNotesContainer) freeNotesContainer.innerHTML = '';
+    if (freeNotesContainer) {
+        freeNotesContainer.innerHTML = '';
+        // Add first input
+        addFreeNote();
+    }
 }
 
 function navigateDocument(direction) {
