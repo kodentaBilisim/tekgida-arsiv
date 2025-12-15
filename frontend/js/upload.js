@@ -407,6 +407,9 @@ async function loadFoldersForSubject(subjectId) {
                     </div>
                     <div class="flex items-center gap-3">
                         <span class="text-sm text-gray-500">${folder.documentCount || 0} doküman</span>
+                        <button onclick="editFolder(${folder.id}); event.stopPropagation();" class="px-3 py-1 text-sm border border-gray-300 text-gray-700 rounded-lg hover:border-primary hover:text-primary">
+                            Düzenle
+                        </button>
                         ${folder.documentCount > 0 ? `
                             <button onclick="viewFolderDocuments(${folder.id}, event)" class="px-3 py-1 text-sm bg-primary text-white rounded-lg hover:bg-primary-dark">
                                 Görüntüle
@@ -1155,3 +1158,68 @@ function closeDocumentViewer() {
         document.body.style.overflow = 'auto';
     }
 }
+
+// Folder edit modal functions
+let currentFolder = null;
+
+async function editFolder(folderId) {
+    try {
+        const folder = await api.folders.getById(folderId);
+        currentFolder = folder;
+
+        // Populate modal
+        document.getElementById('folderDepartmentCode').value = folder.department?.code || 'N/A';
+        document.getElementById('folderSequenceNumber').value = folder.sequenceNumber;
+        document.getElementById('folderCabinetNumber').value = folder.cabinetNumber || '';
+        document.getElementById('folderName').value = folder.name || '';
+        document.getElementById('folderDescription').value = folder.description || '';
+
+        // Show modal
+        document.getElementById('folderModal').classList.remove('hidden');
+    } catch (error) {
+        console.error('Klasör yüklenemedi:', error);
+        utils.showError('Klasör yüklenemedi');
+    }
+}
+
+async function saveFolder() {
+    if (!currentFolder) {
+        utils.showError('Klasör bilgisi bulunamadı');
+        closeFolderModal();
+        return;
+    }
+
+    const sequenceNumber = parseInt(document.getElementById('folderSequenceNumber').value);
+    const cabinetNumber = document.getElementById('folderCabinetNumber').value.trim();
+    const name = document.getElementById('folderName').value.trim();
+    const description = document.getElementById('folderDescription').value.trim();
+
+    try {
+        await api.folders.update(currentFolder.id, {
+            sequenceNumber: sequenceNumber,
+            cabinetNumber: cabinetNumber || null,
+            name: name || null,
+            description: description || null
+        });
+
+        utils.showToast('Klasör güncellendi');
+        closeFolderModal();
+
+        // Reload folders list
+        await loadFoldersForSubject(selectedSubjectId);
+    } catch (error) {
+        console.error('Klasör güncellenemedi:', error);
+        const errorMessage = error.message || 'Klasör güncellenemedi';
+        utils.showError(errorMessage);
+    }
+}
+
+function closeFolderModal() {
+    document.getElementById('folderModal').classList.add('hidden');
+    currentFolder = null;
+}
+
+// Make functions global
+window.editFolder = editFolder;
+window.saveFolder = saveFolder;
+window.closeFolderModal = closeFolderModal;
