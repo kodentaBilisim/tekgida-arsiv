@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import multer from 'multer';
 import dotenv from 'dotenv';
 import sequelize from './config/database.js';
 import { ensureBucket } from './config/minio.js';
